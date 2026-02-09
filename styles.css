@@ -253,4 +253,39 @@ footer {
 }
 
 @media (max-width: 768px) {
+  .loading-text {
+    text-align: center;
+  }
+
+  header {
+    font-size: 20px;
+    text-align: center;
+    margin: 10px;
+  }
+
+  #timeCounter {
+    margin-top: -10px;
+  }
+
+  .flower {
+    zoom: 0.7;
+    bottom: 150px;
+  }
+
+  .grass {
+    bottom: 60px;
+  }
+
+  .flower-message {
+    font-size: 28px;
+    margin-top: 35px;
+  }
+
+  .heart {
+    font-size: 20px !important;
+  }
+
+  .petal {
+    font-size: 20px !important;
+  }
 }
