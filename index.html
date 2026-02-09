@@ -2,39 +2,78 @@
 <html lang="en">
 
 <head>
-  <title>Web Project Template</title>
+  <title>Dating Anniversary</title>
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Web Project Template Repository" />
-  <meta name="keywords" content="Web Project Template, Repository Template" />
+  <meta name="description" content="Dating Anniversary Repository" />
+  <meta name="keywords" content="Dating Anniversary" />
   <meta name="author" content="Eduarda Bastos" />
   <meta name="theme-color" content="#000000" />
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 
-  <meta property="og:title" content="Web Project Template" />
-  <meta property="og:description" content="Web Project Template Repository" />
+  <meta property="og:title" content="Dating Anniversary" />
+  <meta property="og:description" content="Dating Anniversary Repository" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://eduardasrbastos.github.io/repository-template" />
-  <meta property="og:image" content="https://eduardasrbastos.github.io/repository-template/assets/images/preview.png" />
+  <meta property="og:url" content="https://eduardasrbastos.github.io/dating-anniversary" />
+  <meta property="og:image" content="https://eduardasrbastos.github.io/dating-anniversary/assets/images/preview.png" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Web Project Template" />
-  <meta name="twitter:description" content="Web Project Template Repository" />
-  <meta name="twitter:image"
-    content="https://eduardasrbastos.github.io/repository-template/assets/images/preview.png" />
+  <meta name="twitter:title" content="Dating Anniversary" />
+  <meta name="twitter:description" content="Dating Anniversary Repository" />
+  <meta name="twitter:image" content="https://eduardasrbastos.github.io/dating-anniversary/assets/images/preview.png" />
 
-  <link rel="canonical" href="https://eduardasrbastos.github.io/repository-template" />
+  <link rel="canonical" href="https://eduardasrbastos.github.io/dating-anniversary" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" type="image/x-icon" href="./assets/images/favicon.ico" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
 </head>
 
 <body>
+  <div id="loading">
+    <div id="heart-container"></div>
+    <p class="loading-text">Loading my love for you…</p>
+  </div>
+
+  <div id="petal-container"></div>
+
   <header role="banner">
-    <h1>Web Project Template</h1>
+    <h1 id="anniversaryTitle">Dating Anniversary</h1>
+    <p id="timeCounter"></p>
   </header>
 
-  <main role="main"></main>
+  <main role="main">
+    <div class="grass"></div>
+    <div class="flower rose">
+      <div class="flower-sway">
+        <svg class="rose-svg" viewBox="0 0 200 200" aria-hidden="true">
+          <circle cx="100" cy="100" r="70" class="petal outer" />
+          <circle cx="80" cy="90" r="55" class="petal outer" />
+          <circle cx="120" cy="90" r="55" class="petal outer" />
+
+          <circle cx="100" cy="105" r="45" class="petal mid" />
+
+          <path d="M100 100
+         m-20 0
+         a20 20 0 1 1 40 0
+         a12 12 0 1 0 -24 0
+         a6 6 0 1 1 12 0" class="petal inner" />
+        </svg>
+      </div>
+
+      <div class="stem"></div>
+      <div class="leaf left"></div>
+      <div class="leaf right"></div>
+    </div>
+
+    <p id="flower-message" class="flower-message hidden">
+      You make every day feel special 💖
+    </p>
+
+  </main>
 
   <footer role="contentinfo">
     © <span id="year"></span>

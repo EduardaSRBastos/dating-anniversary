@@ -1,16 +1,247 @@
 :root {
-  --main-color: #ffffff;
-  --second-color: #000000;
+  --main-color: #8f0f4a;
+  --second-color: #e29fbd;
 }
 
 html {
   scrollbar-color: var(--second-color) var(--main-color);
   min-height: 100%;
   min-width: 100%;
+  background: linear-gradient(white, var(--second-color));
 }
 
 body {
   margin: 0;
+}
+
+/* Header elements */
+header {
+  text-align: center;
+  font-family: "Parisienne", cursive;
+  font-size: 32px;
+  color: var(--main-color);
+}
+
+#timeCounter {
+  margin-top: -25px;
+  font-weight: bold;
+}
+
+/* Loading */
+#loading {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(white, var(--second-color));
+  z-index: 99999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 1s ease;
+}
+
+#loading.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-text {
+  position: absolute;
+  font-family: "Parisienne", cursive;
+  font-size: 50px;
+  color: var(--main-color);
+  opacity: 0;
+  animation: fadePulse 2s ease-in-out infinite;
+}
+
+@keyframes fadePulse {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+#heart-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.heart {
+  position: absolute;
+  bottom: -25px;
+  animation: floatUp 5s ease-in forwards;
+  opacity: 0.8;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-100vh) scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Background */
+#petal-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.petal {
+  position: absolute;
+  top: -30px;
+  font-size: 40px;
+  opacity: 0.2;
+  animation: petalFall linear infinite;
+}
+
+@keyframes petalFall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+  }
+}
+
+/* Flower */
+.flower {
+  position: fixed;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 240px;
+  z-index: 10;
+  opacity: 0;
+  transform: translateX(-50%) scale(0.8);
+  transition:
+    opacity 1.5s ease,
+    transform 1.5s ease;
+  cursor: pointer;
+}
+
+.flower.visible {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+.flower-message {
+  text-align: center;
+  font-family: "Parisienne", cursive;
+  font-size: 35px;
+  color: var(--main-color);
+  margin-top: 200px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+.flower-message.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.rose-svg {
+  width: 130px;
+  height: 130px;
+  display: block;
+  margin: 0 auto;
+  margin-left: -3px;
+  animation: bloom 1.8s ease-out forwards;
+}
+
+.flower-sway {
+  animation: sway 2s ease-in-out infinite alternate;
+  transform-origin: bottom center;
+}
+
+@keyframes bloom {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes sway {
+  from {
+    transform: rotate(-5deg);
+  }
+  to {
+    transform: rotate(5deg);
+  }
+}
+
+.petal.outer {
+  fill: #7a0f1b;
+  opacity: 0.8;
+}
+
+.petal.mid {
+  fill: #b32741;
+}
+
+.petal.inner {
+  fill: none;
+  stroke: #eb4b4b;
+  stroke-width: 4;
+}
+
+.stem {
+  position: absolute;
+  width: 10px;
+  height: 180px;
+  background: linear-gradient(#3b581a, #3a8f3d);
+  top: 108px;
+  left: 57px;
+  z-index: -1;
+}
+
+.leaf {
+  position: absolute;
+  width: 50px;
+  height: 20px;
+  background: linear-gradient(to top, #3b581a, #4caf50);
+  border-radius: 50%;
+  top: 160px;
+}
+
+.leaf.left {
+  left: 10px;
+  transform: rotate(25deg);
+}
+
+.leaf.right {
+  right: 6px;
+  transform: rotate(-25deg);
+}
+
+.grass {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 550px;
+  height: 40px;
+  background: linear-gradient(to top, #3b581a, #4caf50);
+  border-radius: 100% 100% 0 0;
+  z-index: -2;
 }
 
 footer {
