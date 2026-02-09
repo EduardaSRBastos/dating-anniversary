@@ -233,9 +233,9 @@ header {
 }
 
 .grass {
-  position: fixed; /* fixed so it doesn’t move when flower animates */
-  bottom: 40px;    /* adjust if needed to match previous position */
-  left: 50%;       /* center horizontally */
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
   transform: translateX(-50%);
   width: 550px;
   height: 40px;
