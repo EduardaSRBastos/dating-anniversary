@@ -16,6 +16,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   months = Math.max(months, 1);
 
+  // Create a new flower each month
+  generateFlowers(months);
+
+  // For each month increases grass width
+  const grass = document.querySelector(".grass");
+  const baseWidth = 550;
+  const growthPerMonth = 50;
+
+  grass.style.width = `${baseWidth + months * growthPerMonth}px`;
+
+  // Dynamic text
   let h1Text;
   let tabTitleText;
 
@@ -132,8 +143,76 @@ function updateCounter() {
 updateCounter();
 setInterval(updateCounter, 60000);
 
-// Flower Messages
-const flower = document.querySelector(".flower");
+// Flowers logic
+const flowerTemplate = `
+    <div class="flower rose">
+      <div class="flower-sway">
+        <svg class="rose-svg" viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="70" class="petal outer"/>
+          <circle cx="80" cy="90" r="55" class="petal outer"/>
+          <circle cx="120" cy="90" r="55" class="petal outer"/>
+          <circle cx="100" cy="105" r="45" class="petal mid"/>
+          <path d="M100 100
+            m-20 0
+            a20 20 0 1 1 40 0
+            a12 12 0 1 0 -24 0
+            a6 6 0 1 1 12 0"
+            class="petal inner"/>
+        </svg>
+      </div>
+
+      <div class="stem"></div>
+      <div class="leaf left"></div>
+      <div class="leaf right"></div>
+    </div>
+    `;
+
+function generateFlowers(months) {
+  const container = document.getElementById("flower-container");
+
+  const spacing = window.innerWidth <= 768 ? 100 : 150;
+  const verticalStep = 10;
+
+  for (let i = 0; i < months; i++) {
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = flowerTemplate;
+
+    const flower = wrapper.firstElementChild;
+    const hue = i * 8 + (Math.random() * 8 - 5);
+    const sat = 1 + Math.random() * 0.5;
+
+    flower.style.filter = `
+      hue-rotate(${hue}deg)
+      saturate(${sat})
+    `;
+
+    let offsetX = 0;
+    let offsetY = 0;
+
+    if (i === 0) {
+      offsetX = 0;
+      offsetY = 0;
+    } else {
+      const step = Math.ceil(i / 2);
+      const direction = i % 2 === 1 ? -1 : 1;
+
+      offsetX = step * spacing * direction;
+      offsetY = step * verticalStep;
+    }
+
+    flower.style.left = `calc(50% + ${offsetX}px)`;
+    flower.style.bottom = `${120 - offsetY}px`;
+
+    container.appendChild(flower);
+
+    attachFlowerClick(flower);
+
+    setTimeout(() => {
+      flower.classList.add("visible");
+    }, i * 600);
+  }
+}
+
 const message = document.getElementById("flower-message");
 const messages = [
   "💕 You're the love of my life 💕",
@@ -145,13 +224,16 @@ const messages = [
 
 let hideTimeout;
 
-flower.addEventListener("click", () => {
-  message.textContent = messages[Math.floor(Math.random() * messages.length)];
-  message.classList.add("visible");
+function attachFlowerClick(flower) {
+  flower.addEventListener("click", () => {
+    message.textContent = messages[Math.floor(Math.random() * messages.length)];
 
-  clearTimeout(hideTimeout);
+    message.classList.add("visible");
 
-  hideTimeout = setTimeout(() => {
-    message.classList.remove("visible");
-  }, 5000);
-});
+    clearTimeout(hideTimeout);
+
+    hideTimeout = setTimeout(() => {
+      message.classList.remove("visible");
+    }, 5000);
+  });
+}

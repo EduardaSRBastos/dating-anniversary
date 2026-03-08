@@ -1,6 +1,7 @@
 :root {
   --main-color: #8f0f4a;
   --second-color: #e29fbd;
+  --flower-hue: 0deg;
 }
 
 html {
@@ -115,13 +116,17 @@ header {
 }
 
 /* Flower */
-.flower {
+
+#flower-container {
   position: fixed;
-  bottom: 120px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 120px;
+  bottom: 110px;
+  width: 100%;
   height: 240px;
+}
+
+.flower {
+  position: absolute;
+  width: 120px;
   z-index: 10;
   opacity: 0;
   transform: translateX(-50%) scale(0.8);
@@ -129,6 +134,7 @@ header {
     opacity 1.5s ease,
     transform 1.5s ease;
   cursor: pointer;
+  filter: hue-rotate(var(--flower-hue)) saturate(1.1);
 }
 
 .flower.visible {
@@ -268,7 +274,7 @@ footer {
   }
 
   .flower {
-    zoom: 0.7;
+    zoom: 0.6;
     bottom: 150px;
   }
 
