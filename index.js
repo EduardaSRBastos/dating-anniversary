@@ -220,6 +220,11 @@ const messages = [
   "💘 I love you so so so much 💘",
   "💖 Thank you for being you 💖",
   "💜 You light me up just by being you 💜",
+  "💞 You're the best boyfriend anyone could ever have 💞",
+  "💓 I love every single second I get to spend with you 💓",
+  "🌙 I love you to the moon and back, endlessly 🌙",
+  "💍 Together forever and ever, no matter what 💍",
+  "❤️‍🔥 You'll always be my Juju, today, tomorrow, forever ❤️‍🔥",
 ];
 
 let hideTimeout;
