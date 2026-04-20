@@ -28,6 +28,16 @@ header {
   font-weight: bold;
 }
 
+.gift {
+  font-size: 60px;
+  text-decoration: none;
+  transition: font-size 0.5s ease-in-out;
+}
+
+.gift:hover {
+  font-size: 65px;
+}
+
 /* Loading */
 #loading {
   position: fixed;

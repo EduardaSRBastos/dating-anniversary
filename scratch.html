@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Google font import -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="scratch.css" />
+
+  <title>❤️‍🔥 Scratch Our Memories ❤️‍🔥</title>
+
+</head>
+
+<body>
+
+  <div id="petal-container"></div>
+  <div class="container">
+
+    <h1>Scratch Our Memories</h1>
+
+    <!-- Gallery wrapper with arrows + image -->
+    <div class="image-shell">
+
+      <button class="arrow left" onclick="prevImage()"></button>
+
+      <!-- image + scratch overlay -->
+      <div class="image-wrapper">
+        <img id="photo" src="assets/images/scratch/1.jpg">
+        <canvas id="scratchCanvas"></canvas>
+      </div>
+
+      <button class="arrow right" onclick="nextImage()"></button>
+
+    </div>
+
+  </div>
+
+</body>
+<script src="scratch.js"></script>
+
+</html>
