@@ -157,7 +157,7 @@ header {
   font-family: "Parisienne", cursive;
   font-size: 35px;
   color: var(--main-color);
-  margin-top: 200px;
+  margin-top: 100px;
   opacity: 0;
   transform: translateY(10px);
   transition:
