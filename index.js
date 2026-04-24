@@ -225,6 +225,11 @@ const messages = [
   "🌙 I love you to the moon and back, endlessly 🌙",
   "💍 Together forever and ever, no matter what 💍",
   "❤️‍🔥 You'll always be my Juju, today, tomorrow, forever ❤️‍🔥",
+  "💫 I'm so lucky to call you mine 💫",
+  "💟 I choose you, again and again, every single day 💟",
+  "💌 You're my happiness, my comfort, and my forever 💌",
+  "💝 Life is so much better with you in it 💝",
+  "❣️ You're one of the best things that ever happened to me ❣️",
 ];
 
 let hideTimeout;
