@@ -36,8 +36,7 @@ let currentIndex = 0;
 function updateImage() {
   image.src = images[currentIndex];
 
-    resetCanvas();
-  
+  resetCanvas();
 }
 
 // go to next image (loop)
@@ -307,3 +306,15 @@ document.addEventListener("mouseup", stop);
 canvas.addEventListener("touchstart", start, { passive: false });
 document.addEventListener("touchmove", draw, { passive: false });
 document.addEventListener("touchend", stop);
+
+const ps = "sempre";
+
+let userPassword = "";
+
+while (userPassword.toLowerCase() !== ps) {
+  userPassword = prompt("Enter the password:");
+
+  if (userPassword.toLowerCase() !== ps) {
+    alert("Wrong password! Try again...");
+  }
+}
