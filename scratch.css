@@ -1,0 +1,147 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(white, #e29fbd);
+}
+
+/* Background */
+#petal-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.petal {
+  position: absolute;
+  top: -30px;
+  font-size: 40px;
+  opacity: 0.2;
+  animation: petalFall linear infinite;
+}
+
+@keyframes petalFall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-top: -20px;
+}
+
+h1 {
+  margin: 10px;
+  color: #8f0f4a;
+  font-family: "Parisienne", cursive;
+  font-size: 45px;
+}
+
+.image-shell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+}
+
+.arrow {
+  background: rgba(143, 15, 74, 0.6);
+  border: none;
+  color: white;
+  aspect-ratio: 1;
+  clip-path: shape(
+    from 50% 91%,
+    line to 90% 50%,
+    arc to 50% 9% of 1%,
+    arc to 10% 50% of 1%
+  );
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+}
+
+.arrow:hover {
+  background: #8f0f4a;
+  scale: 1.1;
+}
+
+.left {
+  transform: rotate(90deg);
+}
+
+.right {
+  transform: rotate(-90deg);
+}
+
+.image-wrapper {
+  position: relative;
+  border: 10px solid #8f0f4a;
+  border-radius: 18px;
+  overflow: hidden;
+  display: inline-block;
+  box-shadow: 0 0 20px rgba(143, 15, 74, 0.3);
+
+  animation: glow 5s infinite alternate;
+}
+
+@keyframes glow {
+  0% {
+    box-shadow:
+      0 0 8px rgba(143, 15, 74, 0.2),
+      0 0 0px rgba(143, 15, 74, 0);
+  }
+
+  50% {
+    box-shadow:
+      0 0 18px rgba(143, 15, 74, 0.55),
+      0 0 40px rgba(143, 15, 74, 0.25);
+  }
+
+  100% {
+    box-shadow:
+      0 0 8px rgba(143, 15, 74, 0.2),
+      0 0 0px rgba(143, 15, 74, 0);
+  }
+}
+
+img {
+  display: block;
+  height: 85vh;
+  width: auto;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  display: block;
+  height: 85vh;
+  width: auto;
+  opacity: 1;
+  transition: opacity 1s ease;
+}
+
+canvas.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
