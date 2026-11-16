@@ -1,32 +1,40 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Footer
-  document.getElementById("year").textContent = new Date().getFullYear();
+const START_DATE = new Date(2026, 0, 10);
 
-  // Title
-  const startDate = new Date("2026-01-10");
+function getMonthsTogether() {
   const today = new Date();
-
   let months =
-    (today.getFullYear() - startDate.getFullYear()) * 12 +
-    (today.getMonth() - startDate.getMonth());
+    (today.getFullYear() - START_DATE.getFullYear()) * 12 +
+    (today.getMonth() - START_DATE.getMonth());
 
-  if (today.getDate() < startDate.getDate()) {
+  if (today.getDate() < START_DATE.getDate()) {
     months--;
   }
 
-  months = Math.max(months, 1);
+  return Math.max(months, 1);
+}
 
-  // Create a new flower each month
+// DOM CONTENT LOADED
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const months = getMonthsTogether();
   generateFlowers(months);
 
-  // For each month increases grass width
   const grass = document.querySelector(".grass");
   const baseWidth = 550;
-  const growthPerMonth = 50;
+  const growthPerMonth = 100;
+  const extraPerBouquet = 150;
+  const bouquetCount = Math.floor(months / 12);
+  const remainingMonths = months % 12;
 
-  grass.style.width = `${baseWidth + months * growthPerMonth}px`;
+  const grassWidth =
+    baseWidth +
+    remainingMonths * growthPerMonth +
+    bouquetCount * extraPerBouquet;
 
-  // Dynamic text
+  grass.style.width = `${grassWidth}px`;
+  grass.style.left = bouquetCount > 0 ? "50%" : "47%";
+
   let h1Text;
   let tabTitleText;
 
@@ -49,12 +57,11 @@ document.addEventListener("DOMContentLoaded", function () {
   document.title = tabTitleText;
 });
 
-// Loading
+// LOADING
 function createHeart() {
   const heart = document.createElement("div");
   heart.className = "heart";
   heart.textContent = Math.random() < 0.5 ? "💜" : "💛";
-
   heart.style.left = Math.random() * 100 + "vw";
   heart.style.animationDuration = 3 + Math.random() * 2 + "s";
 
@@ -62,7 +69,6 @@ function createHeart() {
   heart.style.fontSize = size + "px";
 
   document.getElementById("heart-container").appendChild(heart);
-
   setTimeout(() => heart.remove(), 5000);
 }
 
@@ -78,30 +84,29 @@ setTimeout(() => {
   document.getElementById("loading").classList.add("hidden");
 
   setTimeout(() => {
-    document.querySelector(".flower").classList.add("visible");
+    const flower = document.querySelector(".flower");
+    if (flower) flower.classList.add("visible");
   }, 1500);
 }, LOADING_DURATION);
 
-// Background
+// BACKGROUND
 function createPetal() {
   const petal = document.createElement("div");
   petal.className = "petal";
   petal.textContent = "🌸";
-
   petal.style.left = Math.random() * 100 + "vw";
   petal.style.animationDuration = 10 + Math.random() * 10 + "s";
   petal.style.fontSize = 30 + Math.random() * 15 + "px";
 
   document.getElementById("petal-container").appendChild(petal);
-
   setTimeout(() => petal.remove(), 20000);
 }
 
 setInterval(createPetal, 2000);
 
-// Counter
+// COUNTER
 function updateCounter() {
-  const startDate = new Date("2026-01-10T00:00:00");
+  const startDate = START_DATE;
   const now = new Date();
 
   let years = now.getFullYear() - startDate.getFullYear();
@@ -114,15 +119,18 @@ function updateCounter() {
     minutes += 60;
     hours--;
   }
+
   if (hours < 0) {
     hours += 24;
     days--;
   }
+
   if (days < 0) {
     const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
     days += prevMonth.getDate();
     months--;
   }
+
   if (months < 0) {
     months += 12;
     years--;
@@ -136,6 +144,8 @@ function updateCounter() {
   if (hours > 0) parts.push(`${hours} hour${hours !== 1 ? "s" : ""}`);
   if (minutes > 0) parts.push(`${minutes} minute${minutes !== 1 ? "s" : ""}`);
 
+  if (parts.length === 0) parts.push("less than a minute");
+
   document.getElementById("timeCounter").textContent =
     `💕 Together for ${parts.join(", ")} 💕`;
 }
@@ -143,7 +153,7 @@ function updateCounter() {
 updateCounter();
 setInterval(updateCounter, 60000);
 
-// Flowers logic
+// FLOWER TEMPLATE
 const flowerTemplate = `
     <div class="flower rose">
       <div class="flower-sway">
@@ -160,60 +170,245 @@ const flowerTemplate = `
             class="petal inner"/>
         </svg>
       </div>
-
       <div class="stem"></div>
       <div class="leaf left"></div>
       <div class="leaf right"></div>
     </div>
-    `;
+`;
 
+// FLOWER COLORS
+// Each flower uses one colour family, with slightly different shades for depth.
+const flowerColors = {
+  red: {
+    outer: "#a50a36",
+    mid: "#e63956",
+    inner: "#720000",
+  },
+  pink: {
+    outer: "#bd436a",
+    mid: "#f19ab3",
+    inner: "#9b2244",
+  },
+  yellow: {
+    outer: "#fcd436",
+    mid: "#f9c74f",
+    inner: "#aa7409",
+  },
+};
+
+// INTERPOLATE COLOURS FOR THE SINGLE ROSES
+function interpolateColor(start, end, amount) {
+  const startValue = parseInt(start.slice(1), 16);
+  const endValue = parseInt(end.slice(1), 16);
+
+  const r1 = (startValue >> 16) & 255;
+  const g1 = (startValue >> 8) & 255;
+  const b1 = startValue & 255;
+
+  const r2 = (endValue >> 16) & 255;
+  const g2 = (endValue >> 8) & 255;
+  const b2 = endValue & 255;
+
+  const r = Math.round(r1 + (r2 - r1) * amount);
+  const g = Math.round(g1 + (g2 - g1) * amount);
+  const b = Math.round(b1 + (b2 - b1) * amount);
+
+  return (
+    "#" + [r, g, b].map((value) => value.toString(16).padStart(2, "0")).join("")
+  );
+}
+
+function getSingleRoseColors(index, total) {
+  const progress = total <= 1 ? 0 : index / (total - 1);
+
+  let start;
+  let end;
+  let amount;
+
+  if (progress <= 0.5) {
+    start = flowerColors.red;
+    end = flowerColors.pink;
+    amount = progress * 2;
+  } else {
+    start = flowerColors.pink;
+    end = flowerColors.yellow;
+    amount = (progress - 0.5) * 2;
+  }
+
+  return {
+    outer: interpolateColor(start.outer, end.outer, amount),
+    mid: interpolateColor(start.mid, end.mid, amount),
+    inner: interpolateColor(start.inner, end.inner, amount),
+  };
+}
+
+// FLOWER CREATION
+function createFlower(index, container, colors) {
+  const wrapper = document.createElement("div");
+  wrapper.innerHTML = flowerTemplate;
+
+  const flower = wrapper.firstElementChild;
+
+  flower.querySelectorAll(".petal.outer").forEach((petal) => {
+    petal.style.fill = colors.outer;
+  });
+
+  flower.querySelector(".petal.mid").style.fill = colors.mid;
+  flower.querySelector(".petal.inner").style.fill = colors.inner;
+
+  attachFlowerClick(flower);
+  container.appendChild(flower);
+
+  return flower;
+}
+
+// FLOWERS LOGIC
 function generateFlowers(months) {
   const container = document.getElementById("flower-container");
-
   const spacing = window.innerWidth <= 768 ? 100 : 150;
-  const verticalStep = 10;
+  const verticalStep = 5;
 
-  for (let i = 0; i < months; i++) {
-    const wrapper = document.createElement("div");
-    wrapper.innerHTML = flowerTemplate;
+  container.innerHTML = "";
 
-    const flower = wrapper.firstElementChild;
-    const hue = i * 8 + (Math.random() * 8 - 5);
-    const sat = 1 + Math.random() * 0.5;
+  // SINGLE ROSES: RED TO PINK TO YELLOW
+  if (months < 12) {
+    for (let i = 0; i < months; i++) {
+      const colors = getSingleRoseColors(i, months);
+      const flower = createFlower(i, container, colors);
 
-    flower.style.filter = `
-      hue-rotate(${hue}deg)
-      saturate(${sat})
-    `;
+      let offsetX = 0;
+      let offsetY = 0;
 
+      if (i !== 0) {
+        const step = Math.ceil(i / 2);
+        const direction = i % 2 === 1 ? -1 : 1;
+        offsetX = step * spacing * direction;
+        offsetY = step * verticalStep;
+      }
+
+      flower.style.left = `calc(50% + ${offsetX}px)`;
+      flower.style.bottom = `${120 - offsetY}px`;
+
+      setTimeout(() => {
+        flower.classList.add("visible");
+      }, i * 600);
+    }
+    return;
+  }
+
+  // ONE BOUQUET FOR EVERY COMPLETE 12 MONTHS
+  const bouquetCount = Math.floor(months / 12);
+  const remainingFlowers = months % 12;
+
+  for (let i = 0; i < bouquetCount; i++) {
+    const bouquet = document.createElement("div");
+    bouquet.className = "bouquet";
+    bouquet.style.position = "absolute";
+    bouquet.style.width = "0";
+    bouquet.style.height = "0";
+
+    const flowerPosition = i * 12;
     let offsetX = 0;
     let offsetY = 0;
 
-    if (i === 0) {
-      offsetX = 0;
-      offsetY = 0;
-    } else {
-      const step = Math.ceil(i / 2);
-      const direction = i % 2 === 1 ? -1 : 1;
-
+    if (flowerPosition !== 0) {
+      const step = Math.ceil(flowerPosition / 2);
+      const direction = flowerPosition % 2 === 1 ? -1 : 1;
       offsetX = step * spacing * direction;
       offsetY = step * verticalStep;
     }
 
+    bouquet.style.left = `calc(50% + ${offsetX}px)`;
+    bouquet.style.bottom = `${150 - offsetY}px`;
+
+    // All stems converge at this shared point
+    const convergenceY = 220;
+    const stemTop = 108;
+    const flowerHeight = 100;
+
+    for (let j = 0; j < 12; j++) {
+      let colors;
+      let angle;
+      let radius;
+
+      // RED CENTRE
+      if (j === 0) {
+        colors = flowerColors.red;
+        angle = 0;
+        radius = 0;
+      }
+      // PINK INNER RING
+      else if (j <= 5) {
+        colors = flowerColors.pink;
+        angle = ((j - 1) / 5) * Math.PI * 2;
+        radius = 60;
+      }
+      // YELLOW OUTER RING
+      else {
+        colors = flowerColors.yellow;
+        angle = ((j - 6) / 6) * Math.PI * 2;
+        radius = 90;
+      }
+
+      const flower = createFlower(flowerPosition + j, bouquet, colors);
+
+      // Position flower heads in circular rings
+      const x = Math.cos(angle) * radius;
+      const y = Math.sin(angle) * radius;
+
+      flower.style.left = `calc(50% + ${x}px)`;
+      flower.style.bottom = `${y}px`;
+
+      // Keep the colour layers visible
+      flower.style.zIndex = j === 0 ? "3" : j <= 5 ? "2" : "1";
+
+      // Calculate the stem's exact path to the shared point
+      const stemStartY = -flowerHeight + stemTop - y;
+      const verticalDistance = convergenceY - stemStartY;
+      const stemLength = Math.sqrt(x * x + verticalDistance * verticalDistance);
+
+      const stemAngle = Math.atan2(x, verticalDistance) * (180 / Math.PI);
+
+      flower.style.setProperty("--stem-angle", `${stemAngle}deg`);
+      flower.style.setProperty("--stem-length", `${stemLength}px`);
+
+      setTimeout(
+        () => {
+          flower.classList.add("visible");
+        },
+        (flowerPosition + j) * 600,
+      );
+    }
+
+    container.appendChild(bouquet);
+  }
+
+  // REMAINING SINGLE ROSES HAVE THEIR OWN SEPARATE GRADIENT
+  for (let i = 0; i < remainingFlowers; i++) {
+    const colors = getSingleRoseColors(i, remainingFlowers);
+    const flower = createFlower(bouquetCount * 12 + i, container, colors);
+
+    const step = Math.ceil((i + 1) / 2);
+    const direction = i % 2 === 0 ? -1 : 1;
+
+    const offsetX = direction * step * spacing;
+    const offsetY = step * verticalStep;
+
     flower.style.left = `calc(50% + ${offsetX}px)`;
     flower.style.bottom = `${120 - offsetY}px`;
 
-    container.appendChild(flower);
-
-    attachFlowerClick(flower);
-
-    setTimeout(() => {
-      flower.classList.add("visible");
-    }, i * 600);
+    setTimeout(
+      () => {
+        flower.classList.add("visible");
+      },
+      (bouquetCount * 12 + i) * 600,
+    );
   }
 }
 
+// FLOWER MESSAGES
 const message = document.getElementById("flower-message");
+
 const messages = [
   "💕 You're the love of my life 💕",
   "💗 I can't wait to see who you'll become and everything you'll do 💗",
@@ -237,7 +432,6 @@ let hideTimeout;
 function attachFlowerClick(flower) {
   flower.addEventListener("click", () => {
     message.textContent = messages[Math.floor(Math.random() * messages.length)];
-
     message.classList.add("visible");
 
     clearTimeout(hideTimeout);
